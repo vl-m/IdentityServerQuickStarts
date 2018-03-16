@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace IdentityServerApp
 {
@@ -26,7 +27,10 @@ namespace IdentityServerApp
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddTestUsers(Config.GetUsers());
-                        
+
+            var googleDataJson = System.IO.File.ReadAllText(@".\SensitiveData.json");
+            var googleData = JsonConvert.DeserializeObject<SensitiveData>(googleDataJson);
+
             //**/ TODO Note: for Google authentication you need to register your local quickstart identityserver using the Google developer console. 
             // https://console.developers.google.com/
             // As a redirect URL, use the URL of your local identityserver and add /signin-google. 
@@ -35,28 +39,10 @@ namespace IdentityServerApp
               .AddGoogle("Google", options =>
               {
                   options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                  options.ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com";
-                  options.ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh";
-              })
-              .AddOpenIdConnect("demoidsrv", "IdentityServer", options =>
-              {
-                  options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                  options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-
-                  options.Authority = "https://demo.identityserver.io/";
-                  options.ClientId = "implicit";
-                  options.ResponseType = "id_token";
-                  options.SaveTokens = true;
-                  options.CallbackPath = new PathString("/signin-idsrv");
-                  options.SignedOutCallbackPath = new PathString("/signout-callback-idsrv");
-                  options.RemoteSignOutPath = new PathString("/signout-idsrv");
-
-                  options.TokenValidationParameters = new TokenValidationParameters
-                  {
-                      NameClaimType = "name",
-                      RoleClaimType = "role"
-                  };
+                  //**/ TODO do not commit specific data !!!
+                  // How to activate google account https://identityserver4.readthedocs.io/en/release/quickstarts/4_external_authentication.html
+                  options.ClientId = googleData.GoogleClientId;
+                  options.ClientSecret = googleData.GoogleClientSecret;
               });
         }
 
