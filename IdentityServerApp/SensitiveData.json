@@ -1,5 +1,0 @@
-﻿{
-  // Configure https://identityserver4.readthedocs.io/en/release/quickstarts/4_external_authentication.html
-  "GoogleClientId": "GoogleClientId",
-  "GoogleClientSecret": "GoogleClientSecret"
-}
