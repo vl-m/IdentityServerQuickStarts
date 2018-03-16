@@ -295,3 +295,4 @@ __pycache__/
 *.xsd.cs
 
 /IdentityServerApp/tempkey.rsa
+/IdentityServerApp/SensitiveData.json
