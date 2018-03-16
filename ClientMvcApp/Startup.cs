@@ -40,7 +40,16 @@ namespace ClientMvcApp
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "mvc";
+                    options.ClientSecret = "secret";
+                    // use hybrid flow
+                    options.ResponseType = "code id_token";
+
                     options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+
+                    options.Scope.Add("api1");
+                    // allows requesting refresh tokens for long lived API access
+                    options.Scope.Add("offline_access");
                 });
         }
 
